@@ -1,0 +1,21 @@
+.user-avatar {
+    height: 10rem;
+    display: block;
+    position: relative;
+    width: 10rem;
+}
+
+.avatar-change-hover {
+    display: none;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    cursor: pointer;
+}
+.user-avatar:hover .avatar-change-hover {
+    display: flex;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    background: rgba(231, 110, 73, 0.473);
+}
