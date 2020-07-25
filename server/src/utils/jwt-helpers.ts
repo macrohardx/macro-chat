@@ -1,7 +1,7 @@
 import cookie from 'cookie'
 import jwt from 'jsonwebtoken'
 import config from '../config'
-import { IMaybe } from './IMaybe'
+import { IMaybe } from './maybe'
 
 
 export const decodeJwt = (token) : Promise<IMaybe> =>

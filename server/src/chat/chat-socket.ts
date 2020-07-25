@@ -4,7 +4,7 @@ import { maybeGetUserDataFromJwtCookie } from '../utils/jwt-helpers'
 import { createService } from './chat-service'
 const chatService = createService()
 
-const initSocket = (server, path) => {
+export const initChatSocket = (server: any, path: string) => {
 
     const socketServer = io(server, {
         path,
@@ -74,6 +74,3 @@ const initSocket = (server, path) => {
 
     return socketServer
 }
-
-
-module.exports = initSocket

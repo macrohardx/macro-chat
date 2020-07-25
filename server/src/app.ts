@@ -3,14 +3,14 @@ import * as express from 'express'
 import * as http from 'http'
 import { maybeConnectToDatabase } from './utils/database-connection'
 import * as config from './config'
-import * as initChatSocket from './chat/chat-socket'
+import { initChatSocket } from './chat/chat-socket'
 import * as Handlebars from 'handlebars'
 import * as fs from 'fs'
 
 const app = express()
 const server = http.createServer(app)
 
-module.exports.startApp = async () => {
+export const startApp = async () => {
 
     // let { dbOk, dbError } = await maybeConnectToDatabase(mongoose, config.mongo_url, config.db_name, config.db_connection_timeout)
     // if (!dbOk) {
