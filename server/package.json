@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "tsc-build": "tsc",
     "ng-build-dev": "npm run build-dev --prefix ../client",
     "ng-build-prod": "npm run build-prod --prefix ../client"
   },
@@ -21,5 +22,12 @@
     "sanitize-html": "^1.27.0",
     "socket.io": "^2.3.0",
     "uuid": "^8.2.0"
+  },
+  "devDependencies": {
+    "@types/mongoose": "^5.7.32",
+    "@types/node": "^14.0.26",
+    "ts-node": "^8.10.2",
+    "tslint": "^6.1.2",
+    "typescript": "^3.9.7"
   }
 }

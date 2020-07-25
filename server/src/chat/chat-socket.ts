@@ -1,7 +1,8 @@
-const io = require('socket.io')
-const config = require('../config')
-const { maybeGetUserDataFromJwtCookie } = require('../utils/jwt-helpers')
-const chatService = require('./chat-service').createService()
+import io from 'socket.io'
+import config from '../config'
+import { maybeGetUserDataFromJwtCookie } from '../utils/jwt-helpers'
+import { createService } from './chat-service'
+const chatService = createService()
 
 const initSocket = (server, path) => {
 

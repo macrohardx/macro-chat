@@ -3,3 +3,7 @@ node_modules
 .vs
 dist
 out
+out-tsc
+build
+bin
+obj

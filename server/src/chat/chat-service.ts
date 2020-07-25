@@ -1,13 +1,15 @@
-const _ = require('lodash')
-const sanitizeHtml = require('sanitize-html')
+import _ from 'lodash'
+import * as sanitizeHtml from 'sanitize-html'
+import { Message } from './model/message'
 
 const loggedUsers = []
 const rooms = {}
 
 class ChatService {
 
+    public loggedUsers = []
+
     constructor() {
-        this.loggedUsers = []
     }
 
     createRoom(roomName) {
@@ -41,7 +43,7 @@ class ChatService {
         }
 
         return await Message.create({
-            username: userData.username,
+            username: message.username,
             text: sanitizedMessage,
             sentAt: new Date(),
             referenceMessage: referenceMessage,
@@ -67,15 +69,18 @@ class ChatService {
         return _.find(loggedUsers, u => u.username === username)
     }
 
+    setMessageReceived(messageId, username) {
+
+    }
+
+    setMessageRead(messageId, username) {
+        
+    }
+
 }
 
 let cachedService = null
-module.exports = {
-    /**
-     * @returns {ChatService}
-     */
-    createService: () => {
-        cachedService = cachedService || new ChatService()
-        return cachedService
-    }
+export const createService = () : ChatService => {
+    cachedService = cachedService || new ChatService()
+    return cachedService
 }

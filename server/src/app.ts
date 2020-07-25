@@ -1,13 +1,14 @@
-const path = require('path')
-const express = require('express')
+import * as path from 'path'
+import * as express from 'express'
+import * as http from 'http'
+import { maybeConnectToDatabase } from './utils/database-connection'
+import * as config from './config'
+import * as initChatSocket from './chat/chat-socket'
+import * as Handlebars from 'handlebars'
+import * as fs from 'fs'
+
 const app = express()
-const server = require('http').createServer(app)
-const { maybeConnectToDatabase } = require('./database-connection')
-const config = require('./config')
-const initChatSocket = require('./chat/chat-socket')
-const NodeCache = require('node-cache')
-const Handlebars = require('handlebars')
-const fs = require('fs')
+const server = http.createServer(app)
 
 module.exports.startApp = async () => {
 
@@ -17,11 +18,9 @@ module.exports.startApp = async () => {
     //     return process.exit(2)
     // }
 
-    const appLocalStorage = new NodeCache()
-
     //app.all(/^\/macro-chat\/socket-connection$/, function(req, res) { res.redirect('/macro-chat/socket-connection/'); });
     // // Starts Socket.IO endpoints (web sockets)
-    initChatSocket(server, '/macro-chat/socket-connection/', appLocalStorage)
+    initChatSocket(server, '/macro-chat/socket-connection/')
 
     // // Chat API Endpoints (HTTP routes)
     // const chatRouter = require('./chat/chat-router')
@@ -40,7 +39,7 @@ module.exports.startApp = async () => {
     // static content
     app.use('/app/', (req, res, next) => {
         
-        return express.static(path.join(__dirname, '../client/dist'))(req, res, next);
+        return express.static(path.join(__dirname, '../../client/dist'))(req, res, next);
     })
 
     server.listen(4000, () => {console.log('listening to http://localhost:4000')})

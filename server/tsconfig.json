@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist",
+        "baseUrl": "./",
+        "sourceMap": true,
+        "declaration": false,
+        "downlevelIteration": true,
+        "experimentalDecorators": true,
+        "module": "CommonJS",
+        "moduleResolution": "node",
+        "importHelpers": true,
+        "target": "es2015",
+        "typeRoots": [
+            "node_modules/@types"
+        ]
+    },
+    "files": [
+        "src/server.ts"
+    ]
+}

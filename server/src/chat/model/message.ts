@@ -1,6 +1,5 @@
 
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+import { Schema, model, Document } from 'mongoose'
 
 const messageSchema = new Schema({
     text: { type: String, required: true },
@@ -10,4 +9,12 @@ const messageSchema = new Schema({
     room: { type: String, required: true }
 })
 
-module.exports = mongoose.model('Message', messageSchema, 'messages')
+interface IMessage extends Document {
+    text: string
+    username: string,
+    sentAt: Date,
+    referenceMessage: string
+    room: string
+}
+
+export const Message = model<IMessage>('Message', messageSchema, 'messages')
