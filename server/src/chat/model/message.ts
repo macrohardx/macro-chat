@@ -1,20 +1,29 @@
-
 import { Schema, model, Document } from 'mongoose'
+import { IRoom } from './room';
 
-const messageSchema = new Schema({
+const MessageSchema = new Schema({
+    _id: Schema.Types.ObjectId,
     text: { type: String, required: true },
     username: { type: String, required: true },
     sentAt: { type: Date, required: true },
-    referenceMessage: { type: String, required: false },
-    room: { type: String, required: true }
+    replyMessage: { type: Schema.Types.ObjectId, ref: 'Message' },
+    room: { type: Schema.Types.ObjectId, ref: 'Room' }
 })
 
-interface IMessage extends Document {
+MessageSchema.pre<IMessage>('save', function (next) {
+    if (!this.sentAt) {
+        this.sentAt = new Date()
+    }
+    next()
+})
+
+// interface mostly for typescript autocomplete and intellisense
+export interface IMessage extends Document {
     text: string
-    username: string,
-    sentAt: Date,
-    referenceMessage: string
-    room: string
+    username: string
+    room: any
+    sentAt?: Date
+    replyMessage?: any
 }
 
-export const Message = model<IMessage>('Message', messageSchema, 'messages')
+export const Message = model<IMessage>('Message', MessageSchema, 'messages')

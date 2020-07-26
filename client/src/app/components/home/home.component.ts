@@ -11,10 +11,10 @@ import * as io from 'socket.io-client'
 export class HomeComponent implements OnInit {
 
     private socket;
-    constructor(private modalService: NgbModal, private http: HttpClient) { 
-        this.socket = io('http://localhost:4000', { path: '/macro-chat/socket-connection/', transports: ['websocket'] })
+    constructor(private modalService: NgbModal, private http: HttpClient) {         
     }
     ngOnInit() {
+        this.socket = io('https://LAPTOP-LNDR:5000', { path: '/macro-chat/socket-connection', transports: ['websocket'] })
 
         this.socket.on('connection', () => {
             console.log('connected')

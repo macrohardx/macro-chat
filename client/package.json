@@ -4,8 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build-dev": "ng build --base-href /app/ --watch",
-    "build-prod": "ng build --prod --base-href /app/",
+    "build-dev": "ng build --base-href /macro-chat/ --watch",
+    "build-prod": "ng build --prod --base-href /macro-chat/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

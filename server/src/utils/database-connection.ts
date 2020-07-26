@@ -1,6 +1,7 @@
 import { Mongoose } from "mongoose"
+import { IMaybe } from './maybe';
 
-export const maybeConnectToDatabase = (database: Mongoose, dbUrl: string, dbName: string, dbTimeout: number) =>
+export const maybeConnectToDatabase = (database: Mongoose, dbUrl: string, dbName: string, dbTimeout: number) : Promise<IMaybe<any>> =>
     database.connect(`${dbUrl}/${dbName}`, {
         useNewUrlParser: true,
         useCreateIndex: true,
@@ -8,4 +9,4 @@ export const maybeConnectToDatabase = (database: Mongoose, dbUrl: string, dbName
         socketTimeoutMS: dbTimeout
     })
     .then(() => Promise.resolve({ ok: true }))
-    .catch(error => Promise.resolve({ ok: false, error: new Error(error) }))  
+    .catch(error => Promise.resolve({ ok: false, error: error }))

@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "tsc-build": "rimraf ./dist && tsc",
-    "ng-build-dev": "npm run build-dev --prefix ../client",
-    "ng-build-prod": "npm run build-prod --prefix ../client"
+    "serve-dev": "npm-run-all --race --parallel server-watch client-watch",
+    "server-watch": "tsc -watch",
+    "client-watch": "npm run build-dev --prefix ../client",
+    "ng-build-prod": "npm run build-prod --prefix ../client",
+    "tsc-build": "rimraf ./dist && tsc"
   },
   "keywords": [],
   "author": "",
@@ -24,8 +26,11 @@
     "uuid": "^8.2.0"
   },
   "devDependencies": {
+    "@types/cookie": "^0.4.0",
     "@types/mongoose": "^5.7.32",
     "@types/node": "^14.0.26",
+    "@types/socket.io": "^2.1.10",
+    "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
     "ts-node": "^8.10.2",
     "tslint": "^6.1.2",

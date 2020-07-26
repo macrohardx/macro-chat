@@ -1,8 +1,8 @@
-export interface IMaybe {
+export interface IMaybe<T> {
     
-    error?: string
+    error?: any
 
     ok: boolean
 
-    result?: any
+    result?: T
 }
