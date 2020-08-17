@@ -10,7 +10,7 @@ const MessageSchema = new Schema({
     room: { type: Schema.Types.ObjectId, ref: 'Room' }
 })
 
-MessageSchema.pre<IMessage>('save', function (next) {
+MessageSchema.pre<IMessage>('validate', function (next) {
     if (!this.sentAt) {
         this.sentAt = new Date()
     }

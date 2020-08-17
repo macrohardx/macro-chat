@@ -8,15 +8,19 @@
     "server-watch": "tsc -watch",
     "client-watch": "npm run build-dev --prefix ../client",
     "ng-build-prod": "npm run build-prod --prefix ../client",
-    "tsc-build": "rimraf ./dist && tsc"
+    "tsc-build": "rimraf ./dist && tsc",
+    "test": "mocha -r ts-node/register 'src/tests/**/*.spec.ts'"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cookie": "^0.4.1",
+    "cookie-parser": "^1.4.5",
     "express": "^4.17.1",
+    "express-validator": "^6.6.1",
     "handlebars": "^4.7.6",
+    "http-status-codes": "^1.4.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.19",
     "mongoose": "^5.9.24",
@@ -26,10 +30,16 @@
     "uuid": "^8.2.0"
   },
   "devDependencies": {
+    "@types/chai": "^4.2.12",
     "@types/cookie": "^0.4.0",
+    "@types/express": "^4.17.7",
+    "@types/lodash": "^4.14.158",
+    "@types/mocha": "^8.0.2",
     "@types/mongoose": "^5.7.32",
     "@types/node": "^14.0.26",
     "@types/socket.io": "^2.1.10",
+    "chai": "^4.2.0",
+    "mocha": "^8.1.1",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
     "ts-node": "^8.10.2",

@@ -1,4 +1,4 @@
-const express    = require('express')
+import * as express from 'express'
 const router     = express.Router()
 const bodyParser = require('body-parser')
 const Message    = require('./model/message')
@@ -6,7 +6,7 @@ const { today }  = require('../utils/date-utils')
 const { isDate, isNumber, map } = require('lodash/fp')
 const chatService = require('./chat-service').createService()
 
-module.exports = (appLocalStorage) => {
+export const ChatRouter = (appLocalStorage) => {
 
     // register middleware that parses application/x-www-form-urlencoded
     router.use(bodyParser.urlencoded({ extended: true }))
@@ -14,11 +14,15 @@ module.exports = (appLocalStorage) => {
     // register middleware that parses application/json
     router.use(bodyParser.json({ limit: '2mb' }))
 
-    // macro-chat/api/get-messages
+    // GET(macro-chat/api/v1/get-messages)
     router.get('/get-messages', getMessages)
 
-    // macro-chat/api/get-users
+    // GET(macro-chat/api/v1/get-users)
     router.get('/get-users', getLoggedUsers)
+
+    // GET(macro-chat/api/v1/room/{id}/users)           -> Get users inside a room
+    // POST(macro-chat/api/v1/room/{id}/users)          -> Add user to room
+    // DELETE(macro-chat/api/v1/room/{id}/users/{id})   -> Delete user from room
 
     return router
 }

@@ -2,7 +2,6 @@ import config from '../config'
 import { maybeGetUserDataFromJwtCookie } from '../utils/jwt-helpers'
 import { createService } from './chat-service'
 const io = require('socket.io')
-const chatService = createService()
 
 export const initChatSocket = (server: any, path: string) => {
 
@@ -11,16 +10,19 @@ export const initChatSocket = (server: any, path: string) => {
         transports: ['websocket']
     })
 
+    const chatService = createService(socketServer.sockets)
+
     socketServer.on('connection', async (socket) => {
         const maybeUser = await maybeGetUserDataFromJwtCookie(socket.handshake.headers.cookie, config.auth_cookie)
         if (!maybeUser.ok) {
             return socket.disconnect(true)
         }
 
-        chatService.connectUser(maybeUser.result.username, socket);      
+        await chatService.connectUser(maybeUser.result.username, socket)
+        socket.in('general').emit('connected', `${maybeUser.result.username} connected at room general`)
 
         socket.on('send-message', async (message) => {
-            await chatService.newMessage(message)
+            //await chatService.newMessage(message)
         })
 
         // socket.on('message-received', async (messageId) => {
@@ -48,7 +50,7 @@ export const initChatSocket = (server: any, path: string) => {
 
         socket.on('disconnect', () => {
             if (maybeUser.ok) {
-                chatService.disconnectUser(maybeUser.result.username)
+                //chatService.disconnectUser(maybeUser.result.username)
             }
         })
     })

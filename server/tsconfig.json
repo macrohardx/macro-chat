@@ -12,9 +12,16 @@
         "target": "es2015",
         "typeRoots": [
             "node_modules/@types"
-        ]
+        ],
+        "types": [ "node" ]
     },
     "files": [
-        "src/server.ts"
+        "src/server.ts",
+        "src/types/express-custom.d.ts"
+    ],
+    "exclude": [
+        "node_modules/",
+        "src/tests",
+        "dist/"
     ]
 }
