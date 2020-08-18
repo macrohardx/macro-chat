@@ -20,10 +20,6 @@ export const ChatRouter = (appLocalStorage) => {
     // GET(macro-chat/api/v1/get-users)
     router.get('/get-users', getLoggedUsers)
 
-    // GET(macro-chat/api/v1/room/{id}/users)           -> Get users inside a room
-    // POST(macro-chat/api/v1/room/{id}/users)          -> Add user to room
-    // DELETE(macro-chat/api/v1/room/{id}/users/{id})   -> Delete user from room
-
     return router
 }
 

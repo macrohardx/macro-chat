@@ -6,6 +6,9 @@ import { Room, IRoom } from '../model/room'
 import { User } from '../model/user'
 import { Types } from 'mongoose';
 import { createRoomValidations } from './validations/create-room.validation';
+import container from '../../invesrify.config';
+import { IChatRoomService } from './chat-room.service';
+import { TYPES } from '../../types';
 
 export const ChatRoomRouter = () => {
 
