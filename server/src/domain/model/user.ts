@@ -9,4 +9,4 @@ const UserSchema = new Schema({
     username: { type: String, required: true }
 })
 
-export const User = model<IUser>('User', UserSchema, 'users')
+export const UserModel = model<IUser>('User', UserSchema, 'users')

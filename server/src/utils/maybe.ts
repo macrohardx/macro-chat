@@ -1,4 +1,4 @@
-export interface IMaybe<T> {
+export interface Maybe<T> {
     
     error?: any
 

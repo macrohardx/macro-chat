@@ -18,8 +18,7 @@
         "types": [ "node", "reflect-metadata" ]
     },
     "files": [
-        "src/server.ts",
-        "src/types/express-custom.d.ts"
+        "src/index.ts"
     ],
     "exclude": [
         "node_modules/",

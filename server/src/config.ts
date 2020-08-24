@@ -1,4 +1,5 @@
 const config = {
+    PORT: 7001,
     auth_cookie: 'x-access-token',
     service_name: 'MACROCHAT',
     mongo_url: 'mongodb://localhost:3010',
