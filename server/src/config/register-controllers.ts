@@ -1,4 +1,6 @@
 /*
  * Registers all app controllers
  */
-import '../controllers/chatRoom.controller';
+import '../controllers/chat-room.controller';
+
+import '../controllers/socket.controller';

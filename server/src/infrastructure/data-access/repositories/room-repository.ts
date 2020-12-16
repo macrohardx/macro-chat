@@ -1,6 +1,6 @@
 import { injectable, inject } from "inversify";
-import { Query } from '../../../domain/interfaces/repository';
-import { AbstractRepository } from './abstractRepository';
+import { Query, IRoomRepository } from '../../../domain/interfaces/repository';
+import { AbstractRepository } from './abstract-repository';
 import { TYPES } from '../../../config/types';
 import { DbClient } from '../../../config/ioc';
 import { Room } from '../../../domain/model/room';
@@ -9,7 +9,7 @@ import { Document, Schema, Types } from 'mongoose';
 export interface RoomModel extends Room, Document { }
 
 @injectable()
-export class RoomRepository extends AbstractRepository<Room, RoomModel> implements RoomRepository {
+export class RoomRepository extends AbstractRepository<Room, RoomModel> implements IRoomRepository {
 
     public constructor(@inject(TYPES.Db) db: DbClient) {        
         super(db, 'Room', 'rooms')

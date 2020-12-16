@@ -9,5 +9,5 @@ export const maybeConnectToDatabase = (database: Mongoose, dbUrl: string, dbName
         connectTimeoutMS: dbTimeout,
         socketTimeoutMS: dbTimeout
     })
-    .then(() => Promise.resolve({ ok: true }))
-    .catch(error => Promise.resolve({ ok: false, error: error }))
+    .then(() => Promise.resolve({ result: true }))
+    .catch(error => Promise.resolve({ error: error }))

@@ -38,8 +38,19 @@ export abstract class AbstractRepository<TEntity, TModel extends Document>
         return result.map((r) => this._readMapper(r))
     }
 
+    public async queryOne(query?: Query<TEntity>): Promise<TEntity> {
+        return this._readMapper(await this.Model.findOne(query as any))
+    }
+
     public async save(entity: TEntity): Promise<TEntity> {
         const model = new this.Model(entity)
+        const result = await model.save()
+        return this._readMapper(result)
+    }
+
+    public async update(entity: TEntity): Promise<TEntity> {
+        const model = new this.Model(entity)
+        model.isNew = false;
         const result = await model.save()
         return this._readMapper(result)
     }
@@ -56,8 +67,6 @@ export abstract class AbstractRepository<TEntity, TModel extends Document>
 
     protected _readMapper(model: TModel): TEntity {
         const obj: any = model.toJSON();
-        Object.defineProperty(obj, "id", Object.getOwnPropertyDescriptor(obj, "_id"));
-        delete obj["_id"];
         return obj as TEntity;
     }
 }

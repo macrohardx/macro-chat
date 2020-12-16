@@ -1,0 +1,16 @@
+<button id="foo">CLICK ME</button>
+<script src="http://localhost:7001/socket.io/socket.io.js" ></script>
+<script type="text/javascript">
+setTimeout(() => {
+
+    const socket = io('http://localhost:7001')
+    socket.on('message', console.log)
+    
+    document.getElementById('foo').addEventListener('click', () => {
+        socket.emit('message', 'client')
+    })
+
+
+}, 1000)
+    
+</script>
