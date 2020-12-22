@@ -1,3 +1,14 @@
+import { Entity } from './entity';
+
+export interface Message extends Entity {
+    text: string,
+    userId: string,
+    username: string,
+    timestamp: Date,
+    reference: string
+    roomId: string
+}
+
 // import { Schema, model, Document } from 'mongoose'
 
 // const MessageSchema = new Schema({

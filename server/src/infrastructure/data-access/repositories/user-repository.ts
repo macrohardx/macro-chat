@@ -1,6 +1,6 @@
 import { injectable, inject } from "inversify";
 import { AbstractRepository } from './abstract-repository';
-import { TYPES } from '../../../config/types';
+import { TYPES } from '../../../config/ioc-types';
 import { DbClient } from '../../../config/ioc';
 import { Document, Schema } from 'mongoose';
 import { User } from '../../../domain/model/user';
@@ -17,7 +17,11 @@ export class UserRepository extends AbstractRepository<User, UserModel> implemen
 
     protected createSchema() {
         const schema = new Schema({
-            username: { type: String, required: true }
+            username: { type: String, required: true },
+            displayName: { type: String, required: false },
+            profilePicPath: { type: String, required: false },
+            hostname: { type: String, required: false },
+            admin: { type: Boolean, required: false}
         })
         return schema
     }

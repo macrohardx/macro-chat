@@ -1,6 +1,6 @@
 import { Document, Model, Schema } from 'mongoose';
 import { inject, injectable, unmanaged } from 'inversify';
-import { TYPES } from '../../../config/types';
+import { TYPES } from '../../../config/ioc-types';
 import { Repository, Query } from '../../../domain/interfaces/repository';
 import { DbClient } from '../../../config/ioc';
 
@@ -44,29 +44,26 @@ export abstract class AbstractRepository<TEntity, TModel extends Document>
 
     public async save(entity: TEntity): Promise<TEntity> {
         const model = new this.Model(entity)
-        const result = await model.save()
-        return this._readMapper(result)
-    }
-
-    public async update(entity: TEntity): Promise<TEntity> {
-        const model = new this.Model(entity)
-        model.isNew = false;
+        model.isNew = !Boolean(model._id);
         const result = await model.save()
         return this._readMapper(result)
     }
 
     public async remove(entity: TEntity): Promise<TEntity> {
         const model = new this.Model(entity)
-        const result = await model.remove()
+        const result = await model.deleteOne()
         return this._readMapper(result)
     }
 
     public async removeAll(query?: Query<TEntity>): Promise<void> {
-        await this.Model.remove(query as any)
+        await this.Model.deleteMany(query as any)
     }
 
     protected _readMapper(model: TModel): TEntity {
+        if (!model) { return null; }
         const obj: any = model.toJSON();
+        Object.defineProperty(obj, "_id", Object.getOwnPropertyDescriptor(obj, "_id"));
+        Object.defineProperty(obj, "id", Object.getOwnPropertyDescriptor(obj, "_id"));
         return obj as TEntity;
     }
 }

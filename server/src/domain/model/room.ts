@@ -1,7 +1,6 @@
-import { Types } from 'mongoose'
+import { Entity } from './entity';
 
-export interface Room {
-    _id: any
+export interface Room extends Entity {
     name: string
     createdAt?: Date
     updatedAt?: Date,

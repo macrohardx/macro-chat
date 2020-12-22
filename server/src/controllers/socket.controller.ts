@@ -5,6 +5,9 @@ import { log } from '../utils/logger';
 
 var usersVsRooms = {};
 
+/**
+ * It's imperative that the client uses the same version of socket.io client served here at the backend
+ */
 @injectable()
 @Controller(
   '/'
@@ -25,7 +28,9 @@ export class MessageController {
 
   @OnMessage('message')
   message(@Payload() payload: any, @ConnectedSocket() socket: any) {
-    log(`Payload ${payload} received from user ${chalk.blueBright(socket.id)} at room ${chalk.red(usersVsRooms[socket.id])}`);
+    log(`Payload ${payload} received from user ${chalk.blueBright(socket.user.username)} at room ${chalk.red(usersVsRooms[socket.id])}`);
+    payload.username = socket.user.username;
+    payload.timestamp = new Date();
     socket.server.to(usersVsRooms[socket.id]).emit("message", payload);
   }
 

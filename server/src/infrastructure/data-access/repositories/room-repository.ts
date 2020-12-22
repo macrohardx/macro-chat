@@ -1,7 +1,7 @@
 import { injectable, inject } from "inversify";
 import { Query, IRoomRepository } from '../../../domain/interfaces/repository';
 import { AbstractRepository } from './abstract-repository';
-import { TYPES } from '../../../config/types';
+import { TYPES } from '../../../config/ioc-types';
 import { DbClient } from '../../../config/ioc';
 import { Room } from '../../../domain/model/room';
 import { Document, Schema, Types } from 'mongoose';
