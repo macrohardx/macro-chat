@@ -10,6 +10,7 @@ import config from '../config';
 import { safeWriteFile, verifyIfFileExists } from '../utils/fs-safe';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as request from 'request';
 
 @controller('/macro-chat/api/v1/user')
 export class UserController extends BaseApiController {
@@ -17,7 +18,7 @@ export class UserController extends BaseApiController {
   @inject(TYPES.UserRepository) private _usersRepository: IUserRepository;
 
   @httpGet('/me')
-  public async GetCurrentUser() {
+  public async getCurrentUser() {
     const user = await this._usersRepository.findById(this.userId);
     if (!user) {
       return this.json({ error: 'user not found' }, this.statusCodes.NOT_FOUND);
@@ -26,13 +27,13 @@ export class UserController extends BaseApiController {
   }
 
   @httpGet('/all')
-  public async GetAllUser(): Promise<JsonResult> {
+  public async getAllUser(): Promise<JsonResult> {
     const users = await this._usersRepository.queryAll()
     return this.json({ data: users });
   }
 
-  @httpGet('/profile-pic/:userId')
-  public async GetUserProfilePic(@requestParam('userId') userId: string): Promise<any> {
+  @httpGet('/:userId/profile-pic')
+  public async getUserProfilePic(@requestParam('userId') userId: string): Promise<any> {
     let filePath = `${config.file_server_url}\\${userId}_profilePic.jpg`;
     const userHasPicture = await verifyIfFileExists(fs, filePath);
     if (!userHasPicture) {
@@ -42,8 +43,8 @@ export class UserController extends BaseApiController {
     return this.file(filePath, { maxAge: '10m' });
   }
 
-  @httpPut('/profile-pic/:userId')
-  public async SetUserPic(@requestParam('userId') userId, @requestBody() body) {
+  @httpPut('/:userId/profile-pic')
+  public async setUserPic(@requestParam('userId') userId: string, @requestBody() body) {
     // Get user from database
     const user = await this._usersRepository.findById(userId);
     if (!user) {
@@ -55,7 +56,7 @@ export class UserController extends BaseApiController {
     }
 
     // Write file to disk
-    const base64 = body.base64.replace('data:image/jpeg;base64,', '')
+    const base64 = body.base64Img.replace('data:image/jpeg;base64,', '')
     user.profilePicPath = path.join(config.file_server_url, `${this.userId}_profilePic.jpg`)
     await safeWriteFile(fs, user.profilePicPath, base64, { encoding: 'base64' });
 
@@ -63,4 +64,44 @@ export class UserController extends BaseApiController {
     await this._usersRepository.save(user);
     return this.json({ data: true });
   }
+
+  @httpPut('/:userId/update-profile')
+  public async updateProfile(@requestParam('userId') userId: string, @requestBody() body: User) {
+    const user: User = await this._usersRepository.findById(userId);
+    if (!user) {
+      return this.json({ error: 'user not found' }, this.statusCodes.NOT_FOUND);
+    }
+
+    if (body.username !== user.username) {
+      const userByUsername = await this._usersRepository.queryOne({ username: body.username, _id: { $ne: userId } });
+      if (userByUsername != null) {
+        return this.json({ error: 'username already taken' }, this.statusCodes.CONFLICT);
+      }
+    }
+
+    if (body.displayName !== user.displayName) {
+      const userByDisplayName = await this._usersRepository.queryOne({ displayName: body.displayName, _id: { $ne: userId } });
+      if (userByDisplayName != null) {
+        return this.json({ error: 'Display Name already taken' }, this.statusCodes.NOT_FOUND);
+      }
+    }
+
+    user.username = body.username || user.username;
+    user.displayName = body.displayName || user.displayName;
+    await this._usersRepository.save(user);
+    return this.json({ data: user });
+  }
+
+  @httpPut('/:userId/update-password-tip')
+  public async updatePasswordTip(@requestParam('userId') userId: string, @requestBody() body: User) {
+    const user: User = await this._usersRepository.findById(userId);
+    if (!user) {
+      return this.json({ error: 'user not found' }, this.statusCodes.NOT_FOUND);
+    }
+    user.passwordTipQuestion = body.passwordTipQuestion || user.passwordTipQuestion;
+    user.passwordTipAnswer = body.passwordTipAnswer || user.passwordTipAnswer;
+    this._usersRepository.save(user);
+    return this.json({ data: user });
+  }
+
 }

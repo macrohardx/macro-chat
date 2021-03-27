@@ -1,15 +1,19 @@
 import { inject } from 'inversify';
-import { controller, httpGet, httpPost, httpPut, httpDelete, requestParam, BaseHttpController, requestBody } from 'inversify-express-utils';
+import { controller, httpGet, httpPost, httpPut, httpDelete, requestParam, BaseHttpController, requestBody, queryParam } from 'inversify-express-utils';
 import { TYPES } from '../config/ioc-types';
 import * as HttpStatusCode from 'http-status-codes';
 import { Room } from '../domain/model/room';
 import { IRoomManagerService } from '../domain/interfaces/services';
 import { JsonResult } from 'inversify-express-utils/dts/results';
+import { IMessageRepository } from '../domain/interfaces/repository';
 
 @controller(`/macro-chat/api/v1/room`)
 export class ChatRoomController extends BaseHttpController {
 
-  @inject(TYPES.RoomManagerService) _roomService: IRoomManagerService;
+  constructor(@inject(TYPES.RoomManagerService) private _roomService: IRoomManagerService,
+              @inject(TYPES.MessageRepository) private _messageRepository: IMessageRepository) {
+    super();
+  }
 
   @httpGet('/all')
   public async getAllRooms(): Promise<JsonResult> {
@@ -50,5 +54,15 @@ export class ChatRoomController extends BaseHttpController {
     if (error) {
       return this.json({ error }, HttpStatusCode.NOT_FOUND);
     }
+  }
+
+  @httpGet('/:roomId/messages')
+  public async getRoomMessages(@requestParam('roomId') roomId: string, @queryParam('n') amount: number, @queryParam('t') timeStamp: Date): Promise<JsonResult> {
+    let messages = await this._messageRepository.queryAll({ 
+      roomId: roomId,
+      timestamp: { $lt: timeStamp }
+    }, null, { limit: Math.max(10, amount), sort: { timestamp: 'desc' } });
+    messages = messages || [];
+    return this.json({ data: messages });
   }
 }

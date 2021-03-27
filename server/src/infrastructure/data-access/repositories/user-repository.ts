@@ -11,8 +11,9 @@ export interface UserModel extends User, Document { }
 @injectable()
 export class UserRepository extends AbstractRepository<User, UserModel> implements IUserRepository {
 
-    public constructor(@inject(TYPES.Db) db: DbClient) {        
+    public constructor(@inject(TYPES.Db) db: DbClient) {
         super(db, 'User', 'users')
+        this.hiddenFields.push('password', 'profilePictureLocation');
     }
 
     protected createSchema() {
@@ -21,7 +22,9 @@ export class UserRepository extends AbstractRepository<User, UserModel> implemen
             displayName: { type: String, required: false },
             profilePicPath: { type: String, required: false },
             hostname: { type: String, required: false },
-            admin: { type: Boolean, required: false}
+            admin: { type: Boolean, required: false },
+            passwordTipQuestion: { type: String, required: false },
+            passwordTipAnswer: { type: String, required: false }
         })
         return schema
     }

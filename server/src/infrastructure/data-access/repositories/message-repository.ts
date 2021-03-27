@@ -21,7 +21,7 @@ export class MessageRepository extends AbstractRepository<Message, MessageModel>
       timestamp: { type: Date, required: true },
       userId: { type: Schema.Types.ObjectId, ref: 'User' },
       username: { type: String, required: true },
-      roomId: { ttype: Schema.Types.ObjectId, ref: 'Room' },
+      roomId: { type: Schema.Types.ObjectId, ref: 'Room' },
       reference: { type: Schema.Types.ObjectId, ref: 'Message' }
     })
     schema.pre<MessageModel>('validate', function (next) {

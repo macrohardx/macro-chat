@@ -1,5 +1,5 @@
-import { Room } from '../model/room';
 import { Maybe } from '../../utils/maybe';
+import { Message, Room } from '../model/models';
 
 export interface IRoomManagerService {
     getAllRooms(): Promise<Room[]>;

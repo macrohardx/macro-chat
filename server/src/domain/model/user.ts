@@ -5,4 +5,6 @@ export interface User extends Entity {
     profilePicPath: string;
     hostname: string;
     admin: boolean;
+    passwordTipQuestion: string;
+    passwordTipAnswer: string;
 }

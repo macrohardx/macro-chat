@@ -3,12 +3,15 @@ import { inject, injectable, unmanaged } from 'inversify';
 import { TYPES } from '../../../config/ioc-types';
 import { Repository, Query } from '../../../domain/interfaces/repository';
 import { DbClient } from '../../../config/ioc';
+import { Entity } from '../../../domain/model/entity';
 
 @injectable()
-export abstract class AbstractRepository<TEntity, TModel extends Document> 
+export abstract class AbstractRepository<TEntity extends Entity, TModel extends Document> 
     implements Repository<TEntity> {
     
-    protected Model: Model<TModel>
+    protected Model: Model<TModel>;
+
+    protected hiddenFields: string[] = ['__v'];
 
     constructor(@inject(TYPES.Db) db: DbClient, @unmanaged() name: string, @unmanaged()collectionName: string) {
         this.Model = db.model<TModel>(name, this.createSchema(), collectionName)
@@ -33,8 +36,8 @@ export abstract class AbstractRepository<TEntity, TModel extends Document>
         return result.map((r) => this._readMapper(r))
     }
 
-    public async queryAll(query?: Query<TEntity>): Promise<TEntity[]> {
-        const result = await this.Model.find(query as any)
+    public async queryAll(query?: Query<TEntity>, projection?: string | string[] | any, options?: any): Promise<TEntity[]> {
+        const result = await this.Model.find(query as any, projection || null, options || null);
         return result.map((r) => this._readMapper(r))
     }
 
@@ -44,7 +47,7 @@ export abstract class AbstractRepository<TEntity, TModel extends Document>
 
     public async save(entity: TEntity): Promise<TEntity> {
         const model = new this.Model(entity)
-        model.isNew = !Boolean(model._id);
+        model.isNew = !Boolean(entity._id);
         const result = await model.save()
         return this._readMapper(result)
     }
@@ -62,8 +65,12 @@ export abstract class AbstractRepository<TEntity, TModel extends Document>
     protected _readMapper(model: TModel): TEntity {
         if (!model) { return null; }
         const obj: any = model.toJSON();
-        Object.defineProperty(obj, "_id", Object.getOwnPropertyDescriptor(obj, "_id"));
-        Object.defineProperty(obj, "id", Object.getOwnPropertyDescriptor(obj, "_id"));
+        obj.id = model.id;
+        if (this.hiddenFields != null && this.hiddenFields.length > 0) {
+            this.hiddenFields.forEach(h => {
+                delete obj[h];
+            });
+        }
         return obj as TEntity;
     }
 }

@@ -9,6 +9,7 @@
         "emitDecoratorMetadata": true,
         "module": "CommonJS",
         "moduleResolution": "node",
+        "resolveJsonModule": true,
         "importHelpers": true,
         "target": "es5",
         "lib": ["es6"],

@@ -1,0 +1,11 @@
+[
+  {
+    "name": "Foo",
+    "createdAt": "2021-02-06T21:18:59.996Z",
+    "updatedAt": "2021-02-06T21:18:59.996Z",
+    "owner": "Bar",
+    "users": [],
+    "_id": "1232433123",
+    "isNew": false
+  }
+]

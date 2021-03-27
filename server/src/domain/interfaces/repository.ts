@@ -11,7 +11,7 @@ export interface Repository<TEntity> {
   findAll(): Promise<TEntity[]>
   findById(id: string): Promise<TEntity>
   findManyById(ids: string[]): Promise<TEntity[]>
-  queryAll(query?: Query<TEntity>): Promise<TEntity[]>
+  queryAll(query?: Query<TEntity>, projection?: string | string[] | any, options?: any): Promise<TEntity[]>
   queryOne(query?: Query<TEntity>): Promise<TEntity>
 }
 
