@@ -1,2 +1,4 @@
-import { startup } from './startup'
-startup()
+import { startup } from "./startup";
+
+startup();
+console.log("foo");

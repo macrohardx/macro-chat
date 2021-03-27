@@ -11,7 +11,7 @@
     "tsc-build": "rimraf ./dist && tsc",
     "test": "mocha --require ts-node/register tests/**/*.spec.ts",
     "start": "set LogLevel=DEBUG && ts-node ./src/index.ts",
-    "lint":"pretty-quick --staged && lint-staged"
+    "lint": "pretty-quick --staged && lint-staged"
   },
   "keywords": [],
   "author": "",
@@ -73,7 +73,7 @@
     "typescript": "^3.9.7"
   },
   "simple-git-hooks": {
-    "pre-commit": "npx lint"
+    "pre-commit": "cd server && npx lint"
   },
   "lint-staged": {
     "*.{ts,js}": "eslint --cache --fix"
